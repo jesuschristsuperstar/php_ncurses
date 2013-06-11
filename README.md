@@ -19,12 +19,12 @@ freely contribute any feedback, suggestions, or improvements.
 
 ###Changes###
 
-The version here has abstracted the 6 original widgets into separate classes for easier editing and management.
-Errors in the input box widget were fixed.
-Multiple, custom fields are now supported in input box widget.
-Dialog borders were fixed.
-Submenu borders are now optional and are now asterisks when enabled.
-Multiple, custom buttons are now supported for each widget.
+- This version has abstracted the 6 original widgets into separate classes for easier editing and management.
+- Errors in the input box widget were fixed.
+- Multiple, custom fields are now supported in input box widget.
+- Dialog borders were fixed.
+- Submenu borders are now optional and are now asterisks when enabled.
+- Multiple, custom buttons are now supported for each widget.
 
 
 
