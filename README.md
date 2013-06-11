@@ -30,7 +30,7 @@ freely contribute any feedback, suggestions, or improvements.
 
 
 
-###Current Widgets:###
+###Current Widgets###
 
 - checklist   [one column of checkboxes]
 - confirm     [a basic yes/no prompt]
