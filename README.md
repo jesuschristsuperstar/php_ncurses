@@ -6,8 +6,8 @@ This library is a rework of J Randolph Smith's 2007 nDialog class, found
 at the time of writing.
 
 In spite of the limitations of Randolph's script, it was the best available php
-ncurses widget library on the internet in June 2013. His original nDialog class is a single class written 
-for php 4 - this class extracts each widget into a class on its own, adds some significant 
+ncurses widget library on the internet in June 2013. His original "nDialog" class is a single class written 
+for php 4. "php_ncurses" extracts each widget into a class on its own, adds some significant 
 widget configuration features, and is written for > PHP 5. 
 
 All widgets have been tested successfully under PHP 5.4.15 on Ubuntu 10.04, using the php ncurses 
