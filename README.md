@@ -1,14 +1,17 @@
 php_ncurses
 ===========
 
-This library is a cursory reworking of J Randolph Smith's 2007 nDialog class, found 
+This library is a rework of J Randolph Smith's 2007 nDialog class, found 
 <a href="http://www.phpclasses.org/package/3654-PHP-Display-dialog-windows-in-text-consoles.html">here</a>
 at the time of writing.
 
-In spite of the many limitations of Randolph's script, I felt it was the quickest path to a working php
-ncurses widget library after searching the internet in June 2013. The original nDialog class is a single class written 
-for php 4. This class was tested successfully with PHP 5.4.15 on Ubuntu 10.04, using the php ncurses 
-install noted below.
+In spite of the limitations of Randolph's script, it was the best available php
+ncurses widget library on the internet in June 2013. His original nDialog class is a single class written 
+for php 4 - this class extracts each widget into a class on its own, adds some significant 
+widget configuration features, and is written for > PHP 5. 
+
+All widgets have been tested successfully under PHP 5.4.15 on Ubuntu 10.04, using the php ncurses 
+install method noted below.
 
 After spending a little time on improvements I thought I'd save some one else the time of having to do so. Please
 freely contribute any feedback, suggestions, or improvements.
