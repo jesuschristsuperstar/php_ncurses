@@ -2,7 +2,15 @@
 
 class ncurses_msgbox extends ncurses_base {
     
-
+    //DEFAULTS
+    public $buttons = array(
+        array(
+            "text"=>"OK",
+            "hotkey"=>"O",
+            "return"=>true
+        )
+    );
+    
     public function _messagebox(){
 		
         // open a dialog box window
@@ -13,8 +21,7 @@ class ncurses_msgbox extends ncurses_base {
         $this->_stroke_para($win,$this->text,$this->height,$this->width,"center",true);
 
         // ok button
-        $ok_offset_x = round( ($this->width - 6) / 2 );
-        $this->_addbutton("[ OK ]","O",true,$this->height-2,$ok_offset_x);
+        $this->configure_buttons();
 
         // wait for input
         do

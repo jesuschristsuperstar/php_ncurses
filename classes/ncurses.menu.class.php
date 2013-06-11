@@ -2,6 +2,21 @@
 
 class ncurses_menu extends ncurses_base {
     
+    //DEFAULTS
+    public $buttons = array(
+        array(
+            "text"=>"Select",
+            "hotkey"=>"S",
+            "return"=>true
+        ),
+        array(
+            "text"=>"Cancel",
+            "hotkey"=>"C",
+            "return"=>false
+        )
+    );
+    public $border = 0; //1 to show border
+    
     // PUBLIC
     function _menu(){
         
@@ -13,13 +28,10 @@ class ncurses_menu extends ncurses_base {
         $para_offset_y = $this->_stroke_para($win,$this->text,$this->height,$this->width,"center",true);
 
         // Create menu sub-window
-        $mwin = $this->_createMenuSubWindow($win,$this->height,$this->width, $para_offset_y);
+        $mwin = $this->_createMenuSubWindow($win,$this->height,$this->width, $para_offset_y,$this->border);
 
         // configure buttons
-        $ok_offset_x_yes = round( ($this->width - 23) / 2 );
-        $ok_offset_x_no = $ok_offset_x_yes + 13;		
-        $this->_addbutton("[ Select ]","S",true,$this->height-2,$ok_offset_x_yes);
-        $this->_addbutton("[ Cancel ]","C",false,$this->height-2,$ok_offset_x_no);
+        $this->configure_buttons();
 
         // wait for input
         do{
@@ -30,7 +42,7 @@ class ncurses_menu extends ncurses_base {
             // get keyboard input			
             $status = $this->_getMenuInput($win);			
         }
-        while( $status === NULL );
+        while( $status === null );
 
         return($status);
     }

@@ -2,6 +2,19 @@
 
 class ncurses_confirm extends ncurses_base {
     
+    //DEFAULTS
+    public $buttons = array(
+        array(
+            "text"=>"Yes",
+            "hotkey"=>"Y",
+            "return"=>true
+        ),
+        array(
+            "text"=>"No",
+            "hotkey"=>"N",
+            "return"=>false
+        )
+    );
 
     public function _confirm(){
         
@@ -13,10 +26,7 @@ class ncurses_confirm extends ncurses_base {
         $this->_stroke_para($win,$this->text,$this->height,$this->width,"center",true);
 
         // configure buttons
-        $ok_offset_x_yes = round( ($this->width - 16) / 2 );
-        $ok_offset_x_no = $ok_offset_x_yes + 10;		
-        $this->_addbutton("[ Yes ]","Y",TRUE,$this->height-2,$ok_offset_x_yes);
-        $this->_addbutton("[ No ]","N",FALSE,$this->height-2,$ok_offset_x_no);
+        $this->configure_buttons();
 
         // wait for input
         do{

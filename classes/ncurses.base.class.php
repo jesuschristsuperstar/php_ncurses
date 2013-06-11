@@ -1,9 +1,8 @@
 <?php
 
-/* * ****************** ncurses.base.class.php v.0.1 ***********************
- *   Copyright (C) 2007-2013 by J Randolph Smith, Jesus Christ Superstar
- *      
- *   jcss@tecfu.com                                                        *
+/* * ****************** ncurses.base.class.php v.0.1 ****************************
+ *   Copyright (C) 2007 by J Randolph Smith                                *
+ *   johns@servangle.net                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -326,6 +325,7 @@ class ncurses_base {
             $this->_drawThinTopLeft($win, $y, $x, $height, $width);
         }
         ncurses_wattroff($win, NCURSES_A_BOLD);
+        ncurses_wborder($win, 0, 0, 0, 0, 0, 0, 0, 0); // bottom line
     }
 
     // PRIVATE
@@ -675,15 +675,27 @@ class ncurses_base {
 
             case 13 : // enter	
                 $ii = $this->_focusSubindex(); // get selected inputbox
-                if ($this->button_list[$ii]['value'] == true) {
-                    if ($this->mode == "checklist") { // checklists
-                        $exit = $this->_getAllCheckboxVals();
-                    } else { // menu
-                        // return the menu value we are focused on
-                        $exit = $this->menu_list[$this->menu_cursor]['value'];
-                    }
-                } else {
-                    $exit = false;
+                switch($this->mode){
+                    case("checklist"):
+                        if($this->button_list[$ii]['value'] === true){
+                            return $this->_getAllCheckboxVals();
+                        }
+                        else{
+                            return $this->button_list[$ii]['value'];
+                        }
+
+                    case("menu"):
+                        if($this->button_list[$ii]['value'] === true){
+                            return $this->menu_list[$this->menu_cursor]['value'];
+                        }
+                        else{
+                            return $this->button_list[$ii]['value'];
+                        }
+                        break;
+
+                    default:
+                        return $this->button_list[$ii]['value'];
+
                 }
                 break;
 
@@ -813,7 +825,7 @@ class ncurses_base {
     // PRIVATE	
     // Displays and creates a sub-window to contain the Menu Items
     // Returns the resource ID of the sub-window
-    function _createMenuSubWindow(&$win, $parent_height, $parent_width, $para_offset_y) {
+    function _createMenuSubWindow(&$win, $parent_height, $parent_width, $para_offset_y, $border=0) {
         // auto-detect window width based on menu contents
         if ($this->mode == "checklist") {
             $menu_width = 1 + 4 + $this->menu_label_width + 2 + $this->menu_desc_width + 1;
@@ -827,7 +839,10 @@ class ncurses_base {
         //$cord = $this->_getCoordinates($parent_height,$menu_width,"center","middle");
         $y = $this->menu_total + 2;
         $x = $menu_width;
-        $this->_drawThinBorders($win, $cord['y'], $cord['x'], $y, $x);
+        
+        if($border!=0){
+            $this->_drawThinBorders($win, $cord['y'], $cord['x'], $y, $x);
+        }
 
         // draw window inside borders
         $cord = $this->_getCoordinates($parent_height, $menu_width, "center", "middle");
@@ -841,6 +856,33 @@ class ncurses_base {
         }
 
         return($swin);
+    }
+    
+    
+    public function configure_buttons(){
+        $button_padding = '2';
+        $offset = 0;
+        $count = count($this->buttons);
+        
+        $combined_length = 0;
+        
+        //GET COMBINED LENGTH OF ALL BUTTONS SO CAN TIGHTLY CENTER THEM
+        foreach($this->buttons as $key=>$val){
+            //ENCLOSE BUTTONS WITH BRACKETS AND ADD TRAILING SPACE(S)
+            $this->buttons[$key]['text'] = '[ '.$val['text'].' ]';
+            $combined_length += strlen($this->buttons[$key]['text']);
+        }
+        
+        $left = round($this->width / 2) - round($combined_length / 2);
+        
+        foreach($this->buttons as $key=>$val){
+
+            $val['hotkey'] = (!isset($val['hotkey'])) ? '' : $val['hotkey'];
+            
+            //EQUIDISTANT CENTER EACH BUTTON
+            $this->_addbutton($val['text'],$val['hotkey'],$val['return'],$this->height-2,$left);
+            $left = $left + strlen($val['text']) + 2 ; //+2 to leave 2 spaces between buttons 
+        }
     }
 
 // ################## PUBLIC ###################

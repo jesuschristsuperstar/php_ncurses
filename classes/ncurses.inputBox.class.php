@@ -2,10 +2,21 @@
 
 class ncurses_inputBox extends ncurses_base {
     
-
+    //DEFAULTS
+    public $buttons =  array(
+        array(
+            "text"=>"Accept",
+            "hotkey"=>"A",
+            "return"=>"#FORM#"
+        ),
+        array(
+            "text"=>"Cancel",
+            "hotkey"=>"C",
+            "return"=>false
+        )
+    );
     public $input_indentation = 0; //indentation of text fields from left of box      
     public $fields = array();
-    
     
 
     public function _inputbox(){
@@ -38,10 +49,7 @@ class ncurses_inputBox extends ncurses_base {
         }
 
         // configure buttons
-        $ok_offset_x_yes = round( ($this->width - 23) / 2 );
-        $ok_offset_x_no = $ok_offset_x_yes + 13;		
-        $this->_addbutton("[ Accept ]","A","#FORM#",$this->height-2,$ok_offset_x_yes);
-        $this->_addbutton("[ Cancel ]","C",false,$this->height-2,$ok_offset_x_no);
+        $this->configure_buttons();
 
         // wait for input
         do
