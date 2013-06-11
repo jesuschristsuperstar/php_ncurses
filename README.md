@@ -42,9 +42,11 @@ freely contribute any feedback, suggestions, or improvements.
 Examples included. Fully operational. 
 
 
-Prerequisite: You'll need to install the ncurses extension for PHP.
+###Prerequisites### 
 
-###To install php ncurses on Ubuntu 10.04 / PHP-CLI###
+-You'll need to install the ncurses extension for PHP.
+
+To install php ncurses on Ubuntu 10.04 / PHP-CLI
 
     apt-get install php5-dev ncurses-dev libncursesw5-dev
     pecl install ncurses
