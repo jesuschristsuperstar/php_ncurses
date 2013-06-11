@@ -44,6 +44,7 @@ Examples included. Fully operational.
 
 ###Prerequisites###
 
+- You'll need to install PHP-CLI
 - You'll need to install the ncurses extension for PHP.
 
 To install php ncurses on Ubuntu 10.04 / PHP-CLI
