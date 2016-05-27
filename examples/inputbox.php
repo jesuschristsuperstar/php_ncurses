@@ -1,38 +1,33 @@
 <?php
-$classpath =  __DIR__."../../classes/"; 
-require_once($classpath."ncurses.base.class.php");
-require_once($classpath."ncurses.inputBox.class.php");
+use Ncurses\NcursesInputBox;
 
+$classpath = __DIR__ . '/../src/Ncurses/';
+require_once($classpath . 'NcursesBase.php');
+require_once($classpath . 'NcursesInputBox.php');
 
-/**/
 // ********** Example: Inputbox
-
-$dialog = new ncurses_inputBox();
+$dialog = new NcursesInputBox();
 
 // Set a top title bar
-$dialog->set("title_page_header", "PHP ncurses Input Box Example v.1.0.0 - Jesus Christ Superstar ");
-
-$dialog->mode("inputbox","20x60");
-$dialog->set("title_dialog_header", " Customer Profile ");
-
-$dialog->set("text","\nInput Box Title"); //title
-$dialog->input_indentation = 4;
-
-$fields = array(
-    array(
-        "label"=>"First Name",
-        "name"=>"first_name",
-        "value"=>"",
-        "length"=>20
-    ),
-    array(
-        "label"=>"Last Name",
-        "name"=>"last_name",
-        "value"=>"",
-        "length"=>20
-    )
-);
-$dialog->set("fields",$fields);
+$dialog->mode('inputbox', '20x60');
+$dialog->setTitlePageHeader('PHP ncurses Input Box Example v.1.0.0 - Jesus Christ Superstar ');
+$dialog->setTitleDialogHeader(' Customer Profile ');
+$dialog->setText("\nInput Box Title"); //title
+$dialog->setInputIndentation(4);
+$dialog->setFields([
+    [
+        'label' => 'First Name',
+        'name' => 'first_name',
+        'value' => '',
+        'length' => 20
+    ],
+    [
+        'label' => 'Last Name',
+        'name' => 'last_name',
+        'value' => '',
+        'length' => 20
+    ]
+]);
 
 // Show dialog box & get user input
 $result = $dialog->stroke();
@@ -41,6 +36,5 @@ $result = $dialog->stroke();
 $dialog->destroy();
 
 // Show what results we got back
-print"Return value:\n";var_dump($result);
- 
-/**/
+print "Return value:\n";
+var_dump($result);
