@@ -16,3 +16,7 @@ Examples included. Fully operational.
 
 - You'll need to install PHP-CLI 5.4+
 - You'll need to install <a href="http://php.net/manual/en/ncurses.installation.php">the ncurses extension for PHP</a>.
+
+
+###Composer###
+`composer require vsychov/php_ncurses`
