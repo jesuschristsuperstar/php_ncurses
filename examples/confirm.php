@@ -1,19 +1,16 @@
 <?php
-
 use Ncurses\NcursesConfirm;
 
-$classpath = __DIR__ . '/../src/Ncurses/';
-require_once($classpath . 'NcursesBase.php');
-require_once($classpath . 'NcursesConfirm.php');
+require_once(__DIR__ . '/../vendor/autoload.php');
 
 // ********** Example: Confirm box
 $dialog = new NcursesConfirm();
-$dialog->mode('confirm', '7x35');
+$dialog->setWindowDimensions(7, 35);
 $dialog->setTitlePageHeader('PHP ncurses Confirm Box Example v.1.0.0 - Jesus Christ Superstar ');
 $dialog->setText("\nContinue?");
 $dialog->setTitleDialogHeader('');
 // Show dialog box & get user input
-$result = $dialog->stroke();
+$result = $dialog->display();
 // Properly cleanup the screen
 $dialog->destroy();
 

@@ -1,0 +1,25 @@
+{
+  "name": "vsychov/php_ncurses",
+  "license": "GPLv3",
+  "type": "project",
+  "authors": [
+    {
+      "name": "J Randolph Smith",
+      "email": "johns@servangle.net"
+    },
+    {
+      "name": "Viacheslav Sychov",
+      "email": "dev@sychov.pro",
+      "homepage": "https://sychov.pro"
+    }
+  ],
+  "description": "PHP ncurses widget library",
+  "autoload": {
+    "psr-4": {
+      "": "src/"
+    }
+  },
+  "require": {
+    "php": ">=5.4"
+  }
+}

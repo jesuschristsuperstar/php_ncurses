@@ -13,28 +13,31 @@ class NcursesConfirm extends NcursesBase
      */
     protected $buttons = [
         [
-            "text" => "Yes",
-            "hotkey" => "Y",
-            "return" => true
+            'text' => 'Yes',
+            'hotkey' => 'Y',
+            'return' => true
         ],
         [
-            "text" => "No",
-            "hotkey" => "N",
-            "return" => false
+            'text' => 'No',
+            'hotkey' => 'N',
+            'return' => false
         ]
     ];
 
     /**
      * @return mixed
      */
-    protected function confirm()
+    public function display()
     {
+        ncurses_init();
+        $this->initScreen();
+
         // open a dialog box window
-        $cord = $this->getCoordinates($this->height, $this->width, "center", "middle");
+        $cord = $this->getCoordinates($this->height, $this->width, 'center', 'middle');
         $win = $this->createDialogWindow($cord['y'], $cord['x'], $this->height, $this->width, true);
 
         // output dialog text
-        $this->strokePara($win, $this->text, $this->height, $this->width, "center", true);
+        $this->strokePara($win, $this->text, $this->height, $this->width, 'center', true);
 
         // configure buttons
         $this->configureButtons();

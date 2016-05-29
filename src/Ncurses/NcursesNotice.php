@@ -29,8 +29,11 @@ class NcursesNotice extends NcursesBase
         return $this;
     }
 
-    protected function notice()
+    public function display()
     {
+        ncurses_init();
+        $this->initScreen();
+
         if ((int) $this->width === 0 || (int) $this->height === 0) {
             // auto-detect required height & width based on text
             $this->width = $this->height = 0;
@@ -46,13 +49,13 @@ class NcursesNotice extends NcursesBase
         }
 
         // open a dialog box window
-        $width = max(array($this->width, $this->minWidth));
+        $width = max([$this->width, $this->minWidth]);
 
-        $cord = $this->getCoordinates($this->height, $width, "center", "middle");
+        $cord = $this->getCoordinates($this->height, $width, 'center', 'middle');
 
         $this->nwin = $this->createDialogWindow($cord['y'], $cord['x'], $this->height + 2, $width, true, 2);
 
-        $this->strokePara($this->nwin, $this->text, $this->height, $width, "center", false);
+        $this->strokePara($this->nwin, $this->text, $this->height, $width, 'center', false);
 
         ncurses_wrefresh($this->nwin);
     }

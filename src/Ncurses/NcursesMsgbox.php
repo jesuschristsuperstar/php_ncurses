@@ -41,8 +41,11 @@ class NcursesMsgbox extends NcursesBase
     /**
      * @return bool
      */
-    protected function messageBox()
+    public function display()
     {
+        ncurses_init();
+        $this->initScreen();
+
         //open a dialog box window
         $cord = $this->getCoordinates($this->height, $this->width, 'center', 'middle');
         $win = $this->createDialogWindow($cord['y'], $cord['x'], $this->height, $this->width, true);

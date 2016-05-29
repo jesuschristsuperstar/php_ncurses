@@ -94,8 +94,11 @@ class NcursesInputBox extends NcursesBase
     /**
      * @return mixed
      */
-    protected function inputbox()
+    public function display()
     {
+        ncurses_init();
+        $this->initScreen();
+
         // open a dialog box window
         $cord = $this->getCoordinates($this->height, $this->width, "center", "middle");
         $win = $this->createDialogWindow($cord['y'], $cord['x'], $this->height, $this->width, true);
@@ -161,34 +164,34 @@ class NcursesInputBox extends NcursesBase
      */
     protected function addInputBox($win, $name, $label, $cord_y, $cord_x, $max_length, $init_val)
     {
-        $this->inputboxList[$this->inputboxTotal]['win'] = $win;    // resource window
-        $this->inputboxList[$this->inputboxTotal]['name'] = $name;
-        $this->inputboxList[$this->inputboxTotal]['label'] = $label;
+        $this->inputBoxList[$this->inputBoxTotal]['win'] = $win;    // resource window
+        $this->inputBoxList[$this->inputBoxTotal]['name'] = $name;
+        $this->inputBoxList[$this->inputBoxTotal]['label'] = $label;
 
         //DROP INPUT BOX TO ONE LINE BELOW LABEL
-        $this->inputboxList[$this->inputboxTotal]['y'] = $cord_y + 1;
-        $this->inputboxList[$this->inputboxTotal]['x'] = $cord_x;
-        $this->inputboxList[$this->inputboxTotal]['max_length'] = $max_length;    // max allowed input size
+        $this->inputBoxList[$this->inputBoxTotal]['y'] = $cord_y + 1;
+        $this->inputBoxList[$this->inputBoxTotal]['x'] = $cord_x;
+        $this->inputBoxList[$this->inputBoxTotal]['max_length'] = $max_length;    // max allowed input size
 
         // set a default value - if given.
         if ($init_val != "") {
             $len = strlen($init_val);
             for ($c = 0; $c < $len; $c++) {
                 $char = substr($init_val, $c, 1);
-                $this->inputboxList[$this->inputboxTotal]['val'][$c] = $char;
+                $this->inputBoxList[$this->inputBoxTotal]['val'][$c] = $char;
             }
-            $this->inputboxList[$this->inputboxTotal]['val_cursor'] = $c;
-            $this->inputboxList[$this->inputboxTotal]['val_len'] = $c;
+            $this->inputBoxList[$this->inputBoxTotal]['val_cursor'] = $c;
+            $this->inputBoxList[$this->inputBoxTotal]['val_len'] = $c;
         } else {
-            $this->inputboxList[$this->inputboxTotal]['val'] = array();
-            $this->inputboxList[$this->inputboxTotal]['val_cursor'] = 0;
-            $this->inputboxList[$this->inputboxTotal]['val_len'] = 0;
+            $this->inputBoxList[$this->inputBoxTotal]['val'] = array();
+            $this->inputBoxList[$this->inputBoxTotal]['val_cursor'] = 0;
+            $this->inputBoxList[$this->inputBoxTotal]['val_len'] = 0;
         }
 
         // add to master focus list
-        $this->focusList[$this->focusTotal] = 'I-' . $this->inputboxTotal;
+        $this->focusList[$this->focusTotal] = 'I-' . $this->inputBoxTotal;
 
-        $this->inputboxTotal++;
+        $this->inputBoxTotal++;
         $this->focusTotal++;
     }
 
@@ -197,7 +200,7 @@ class NcursesInputBox extends NcursesBase
      */
     protected function strokeInputBoxes()
     {
-        for ($i = 0; $i < $this->inputboxTotal; $i++) {
+        for ($i = 0; $i < $this->inputBoxTotal; $i++) {
             $this->drawInputBox($i);
         }
     }
@@ -210,12 +213,12 @@ class NcursesInputBox extends NcursesBase
     {
         $label_offset = 0;
 
-        $win = &$this->inputboxList[$index]['win'];
-        $label = &$this->inputboxList[$index]['label'];
-        $hotkey = &$this->inputboxList[$index]['hot'];
-        $cord_y = &$this->inputboxList[$index]['y'];
-        $cord_x = &$this->inputboxList[$index]['x'];
-        $max_length = &$this->inputboxList[$index]['max_length'];
+        $win = &$this->inputBoxList[$index]['win'];
+        $label = &$this->inputBoxList[$index]['label'];
+        $hotkey = &$this->inputBoxList[$index]['hot'];
+        $cord_y = &$this->inputBoxList[$index]['y'];
+        $cord_x = &$this->inputBoxList[$index]['x'];
+        $max_length = &$this->inputBoxList[$index]['max_length'];
 
         ncurses_wcolor_set($win, 2);
 
@@ -244,11 +247,11 @@ class NcursesInputBox extends NcursesBase
      */
     protected function drawInputBoxContents($index)
     {
-        $win = &$this->inputboxList[$index]['win'];
-        $val = &$this->inputboxList[$index]['val'];
-        $cord_y = &$this->inputboxList[$index]['y'];
-        $cord_x = &$this->inputboxList[$index]['x'];
-        $label = &$this->inputboxList[$index]['label'];
+        $win = &$this->inputBoxList[$index]['win'];
+        $val = &$this->inputBoxList[$index]['val'];
+        $cord_y = &$this->inputBoxList[$index]['y'];
+        $cord_x = &$this->inputBoxList[$index]['x'];
+        $label = &$this->inputBoxList[$index]['label'];
 
         // label offset
         $label_offset = 0;
@@ -257,10 +260,10 @@ class NcursesInputBox extends NcursesBase
         }
 
         // output the value
-        for ($n = 0; $n < $this->inputboxList[$index]['max_length']; $n++) {
+        for ($n = 0; $n < $this->inputBoxList[$index]['max_length']; $n++) {
             // Set content color based on has focus or not.
             if (($this->focusCat() === 'I') && ($this->focusSubindex() == $index)) {
-                if ($n == $this->inputboxList[$index]['val_cursor']) {
+                if ($n == $this->inputBoxList[$index]['val_cursor']) {
                     //CURSOR COLOR - RED
                     ncurses_wcolor_set($win, 1);
                 } else {

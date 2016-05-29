@@ -13,14 +13,14 @@ class NcursesChecklist extends NcursesBase
      */
     protected $buttons = [
         [
-            "text" => "OK",
-            "hotkey" => "O",
-            "return" => true
+            'text' => 'OK',
+            'hotkey' => 'O',
+            'return' => true
         ],
         [
-            "text" => "Cancel",
-            "hotkey" => "C",
-            "return" => false
+            'text' => 'Cancel',
+            'hotkey' => 'C',
+            'return' => false
         ]
     ];
 
@@ -61,8 +61,11 @@ class NcursesChecklist extends NcursesBase
     /**
      * @return mixed
      */
-    protected function checklist()
+    public function display()
     {
+        ncurses_init();
+        $this->initScreen();
+
         // open a dialog box window
         $cord = $this->getCoordinates($this->height, $this->width, "center", "middle");
         $win = $this->createDialogWindow($cord['y'], $cord['x'], $this->height, $this->width, true);

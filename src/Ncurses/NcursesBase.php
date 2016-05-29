@@ -2,28 +2,28 @@
 
 namespace Ncurses;
 
-/* * ********************* NcursesBase.php  *******************************
- *   Copyright (C) 2007 by J Randolph Smith                                *
- *   johns@servangle.net                                                   *
- *                                                                         *
- *   Copyright (C) 2016 by Viacheslav Sychov                               *
- *   dev@sychov.pro                                                        *
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License for more details.                          *
- *                                                                         *
- *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
- *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
- * ************************************************************************* */
+    /* * ********************* NcursesBase.php  *******************************
+     *   Copyright (C) 2007 by J Randolph Smith                                *
+     *   johns@servangle.net                                                   *
+     *                                                                         *
+     *   Copyright (C) 2016 by Viacheslav Sychov                               *
+     *   dev@sychov.pro                                                        *
+     *                                                                         *
+     *   This program is free software; you can redistribute it and/or modify  *
+     *   it under the terms of the GNU General Public License as published by  *
+     *   the Free Software Foundation; either version 2 of the License, or     *
+     *   (at your option) any later version.                                   *
+     *                                                                         *
+     *   This program is distributed in the hope that it will be useful,       *
+     *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+     *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+     *   GNU General Public License for more details.                          *
+     *                                                                         *
+     *   You should have received a copy of the GNU General Public License     *
+     *   along with this program; if not, write to the                         *
+     *   Free Software Foundation, Inc.,                                       *
+     *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+     * ************************************************************************* */
 
 /**
  * Class NcursesBase
@@ -31,42 +31,153 @@ namespace Ncurses;
  */
 abstract class NcursesBase
 {
+    /**
+     * @var string
+     */
     protected $titlePageHeader;
+
+    /**
+     * @var string
+     */
     protected $titleDialogHeader;
+
+    /**
+     * @var string
+     */
     protected $mode; // tracks the dialog mode
+
+    /**
+     * @var string
+     */
     protected $text;
+
+    /**
+     * @var integer
+     */
     protected $height, $width;
+
+    /**
+     * @var integer
+     */
     protected $length;
+
+    /**
+     * @var mixed
+     */
     protected $defaultVal;
+
+    /**
+     * @var integer
+     */
     protected $screenMaxWidth, $screenMaxHeight; // auto-detect current screen size
+
+    /**
+     * @var array
+     */
     protected $buttonList;
+
+    /**
+     * @var integer
+     */
     protected $buttonTotal;
+
+    /**
+     * @var integer
+     */
     protected $buttonCursor;
-    protected $inputboxList;
-    protected $inputboxTotal;
-    protected $menuList; // array of menu items
-    protected $menuTotal; // menu depth
+
+    /**
+     * @var array
+     */
+    protected $inputBoxList;
+
+    /**
+     * @var integer
+     */
+    protected $inputBoxTotal;
+
+    /**
+     * @var array array of menu items
+     */
+    protected $menuList;
+
+    /**
+     * @var integer
+     */
+    protected $menuTotal;
+
+    /**
+     * @var integer
+     */
     protected $menuCursor;
+
+    /**
+     * @var integer
+     */
     protected $menuLabelWidth;
+
+    /**
+     * @var integer
+     */
     protected $menuDescWidth;
-    protected $nwin; // notice window handler
-    protected $swin; // shadow window handler
-    protected $textboxChar; // text char array
-    protected $textboxLen; //current length of text
-    protected $textboxMax; //current length of text
+
+    /**
+     * notice window handler
+     * @var resource
+     */
+    protected $nwin;
+
+    /**
+     * shadow window handler
+     * @var resource
+     */
+    protected $swin;
+
+    /**
+     * text char array
+     * @var mixed
+     */
+    protected $textBoxChar;
+
+    /**
+     * current length of text
+     * @var integer
+     */
+    protected $textBoxLen;
+
+    /**
+     * @var integer
+     */
+    protected $textBoxMax;
+
+    /**
+     * @var array
+     */
     protected $focusList;
+
+    /**
+     * @var integer
+     */
     protected $focusTotal;
+
+    /**
+     * @var integer
+     */
     protected $focusCursor;
+
+    /**
+     * @return mixed
+     */
+    abstract public function display();
 
     /**
      * NcursesBase constructor.
      */
     public function __construct()
     {
-        $this->titlePageHeader = "";
+        $this->titlePageHeader = '';
         $this->reset();
     }
-
 
     public function configureButtons()
     {
@@ -96,89 +207,42 @@ abstract class NcursesBase
     }
 
     /**
-     * @param $mode
-     * @param string $size
+     * @param $height
+     * @param $width
      */
-    public function mode($mode, $size = '')
+    public function setWindowDimensions($height, $width)
     {
         $this->reset();
 
-        $this->mode = $mode;
-
         // set hieght/width
-        if ($size != "") {
-            list($this->height, $this->width) = explode("x", $size);
-        } else {
-            $this->height = $this->width = 0;
-        }
-    }
-
-    /**
-     * @return string
-     */
-    public function stroke()
-    {
-        // startup ncurses
-        ncurses_init();
-        $this->initScreen();
-
-        switch ($this->mode) {
-            case 'menu':
-                $results = $this->menu();
-                break;
-
-            case 'checklist':
-                $results = $this->checklist();
-                break;
-
-            case 'notice':
-                $results = $this->notice();
-                break;
-
-            case 'msgbox':
-                $results = $this->messageBox();
-                break;
-
-            case 'confirm':
-                $results = $this->confirm();
-                break;
-
-            case 'inputbox':
-                $results = $this->inputbox();
-                break;
-
-            default:
-                $results = "ERROR: unknown <mode>\n\n";
-        }
-
-        return ($results);
+        $this->setHeight((int) $height);
+        $this->setWidth((int) $width);
     }
 
     protected function reset()
     {
-        $this->mode = "";
-        $this->test = "";
-        $this->size = "";
+        $this->test = '';
+        $this->size = '';
         $this->height = 0;
         $this->width = 0;
 
-        $this->buttonList = null;
+        $this->buttonList = [];
         $this->buttonTotal = 0;
         $this->buttonCursor = 0;
 
-        $this->inputboxList = null;
-        $this->inputboxTotal = 0;
+        $this->inputBoxList = [];
+        $this->inputBoxTotal = 0;
 
-        $this->menuList = null;
+        $this->menuList = [];
         $this->menuTotal = 0;
         $this->menuCursor = 0;
         $this->menuLabelWidth = 0;
         $this->menuDescWidth = 0;
         $this->nwin = $this->swin = null;
-        $this->textboxChar = null;
-        $this->textboxLen = $textbox_max = 0;
+        $this->textBoxChar = null;
+        $this->textBoxLen = $textbox_max = 0;
 
-        $this->focusList = null;
+        $this->focusList = [];
         $this->focusTotal = 0;
         $this->focusCursor = 0;
     }
@@ -279,9 +343,9 @@ abstract class NcursesBase
     protected function focusCat()
     {
         // get current focus category
-        list($cat, $index) = explode("-", $this->focusList[$this->focusCursor]);
+        list($cat, $index) = explode('-', $this->focusList[$this->focusCursor]);
 
-        return ($cat);
+        return $cat;
     }
 
     /**
@@ -291,9 +355,9 @@ abstract class NcursesBase
     protected function focusSubindex()
     {
         // get current focus index
-        list($cat, $index) = explode("-", $this->focusList[$this->focusCursor]);
+        list($cat, $index) = explode('-', $this->focusList[$this->focusCursor]);
 
-        return ($index);
+        return $index;
     }
 
     /**
@@ -484,7 +548,7 @@ abstract class NcursesBase
      * @param bool $wrap
      * @return int
      */
-    protected function strokePara(&$win, $text, $y, $x, $align = "center", $wrap = true)
+    protected function strokePara(&$win, $text, $y, $x, $align = 'center', $wrap = true)
     {
         if ($wrap) {
             $text = wordwrap($text, ($x - 2), "|");
@@ -562,7 +626,7 @@ abstract class NcursesBase
             $hotchar = strtolower($this->menuList[$n]['hot']);
 
             if ($thischar == $hotchar) {
-                if ($this->mode == "checklist") { // checklists support
+                if ($this instanceof NcursesChecklist) { // checklists support
                     $this->menuList[$n]['selected'] = ($this->menuList[$n]['selected'] == false ? true : false);
 
                     return (null);
@@ -584,9 +648,9 @@ abstract class NcursesBase
     {
         $results = array();
 
-        for ($n = 0; $n < $this->inputboxTotal; $n++) {
-            $name = $this->inputboxList[$n]['name'];
-            $value = implode("", $this->inputboxList[$n]['val']); // merge value array to string
+        for ($n = 0; $n < $this->inputBoxTotal; $n++) {
+            $name = $this->inputBoxList[$n]['name'];
+            $value = implode('', $this->inputBoxList[$n]['val']); // merge value array to string
             $results[$name] = $value;
         }
 
@@ -717,8 +781,8 @@ abstract class NcursesBase
 
             case NCURSES_KEY_RIGHT:
                 $ii = $this->focusSubindex(); // get selected inputbox
-                $val_len = &$this->inputboxList[$ii]['val_len'];
-                $cursor = &$this->inputboxList[$ii]['val_cursor'];
+                $val_len = &$this->inputBoxList[$ii]['val_len'];
+                $cursor = &$this->inputBoxList[$ii]['val_cursor'];
                 if ($cursor < $val_len) {
                     $cursor++;
                 } else {
@@ -729,7 +793,7 @@ abstract class NcursesBase
 
             case NCURSES_KEY_LEFT:
                 $ii = $this->focusSubindex(); // get selected inputbox
-                $cursor = &$this->inputboxList[$ii]['val_cursor'];
+                $cursor = &$this->inputBoxList[$ii]['val_cursor'];
                 if ($cursor > 0) {
                     $cursor--;
                 } else {
@@ -741,9 +805,9 @@ abstract class NcursesBase
             case 263: // backspace
                 $ii = $this->focusSubindex(); // get selected inputbox
 
-                $cursor = &$this->inputboxList[$ii]['val_cursor'];
-                $value = &$this->inputboxList[$ii]['val'];
-                $value_len = &$this->inputboxList[$ii]['val_len'];
+                $cursor = &$this->inputBoxList[$ii]['val_cursor'];
+                $value = &$this->inputBoxList[$ii]['val'];
+                $value_len = &$this->inputBoxList[$ii]['val_len'];
 
                 if ($cursor > 0) {
                     $sub1 = array_slice($value, 0, $cursor - 1);
@@ -763,9 +827,9 @@ abstract class NcursesBase
             case 330: // del key
                 $ii = $this->focusSubindex(); // get selected inputbox
 
-                $cursor = &$this->inputboxList[$ii]['val_cursor'];
-                $value = &$this->inputboxList[$ii]['val'];
-                $value_len = &$this->inputboxList[$ii]['val_len'];
+                $cursor = &$this->inputBoxList[$ii]['val_cursor'];
+                $value = &$this->inputBoxList[$ii]['val'];
+                $value_len = &$this->inputBoxList[$ii]['val_len'];
 
                 $sub1 = array_slice($value, 0, $cursor);
                 $sub2 = array_slice($value, $cursor + 1);
@@ -780,10 +844,10 @@ abstract class NcursesBase
             default:
                 $ii = $this->focusSubindex(); // get selected inputbox
 
-                $value = &$this->inputboxList[$ii]['val'];
-                $value_len = &$this->inputboxList[$ii]['val_len'];
-                $value_max = &$this->inputboxList[$ii]['max_length'];
-                $cursor = &$this->inputboxList[$ii]['val_cursor'];
+                $value = &$this->inputBoxList[$ii]['val'];
+                $value_len = &$this->inputBoxList[$ii]['val_len'];
+                $value_max = &$this->inputBoxList[$ii]['max_length'];
+                $cursor = &$this->inputBoxList[$ii]['val_cursor'];
 
                 if (($keyPressed >= 32) && ($keyPressed <= 126)) {
                     if ($value_len < $value_max) {
@@ -851,7 +915,7 @@ abstract class NcursesBase
                 break;
 
             case 32: // space
-                if ($this->mode === 'checklist') {
+                if ($this instanceof NcursesChecklist) {
                     // toggle item selection
                     $this->menuList[$this->menuCursor]['selected'] = ($this->menuList[$this->menuCursor]['selected'] == false ? true : false);
                 }
@@ -859,35 +923,30 @@ abstract class NcursesBase
 
             case 13: //enter
                 $ii = $this->focusSubindex(); // get selected inputbox
-                switch ($this->mode) {
-                    case 'checklist':
-                        if ($this->buttonList[$ii]['value'] === true) {
-                            return $this->getAllCheckboxVals();
-                        } else {
-                            return $this->buttonList[$ii]['value'];
-                        }
-                        break;
-
-                    case 'menu':
-                        if ($this->buttonList[$ii]['value'] === true) {
-                            return $this->menuList[$this->menuCursor]['value'];
-                        } else {
-                            return $this->buttonList[$ii]['value'];
-                        }
-                        break;
-
-                    default:
+                if ($this instanceof NcursesChecklist) {
+                    if ($this->buttonList[$ii]['value'] === true) {
+                        return $this->getAllCheckboxVals();
+                    } else {
                         return $this->buttonList[$ii]['value'];
-
+                    }
                 }
-                break;
+
+                if ($this instanceof NcursesMenu) {
+                    if ($this->buttonList[$ii]['value'] === true) {
+                        return $this->menuList[$this->menuCursor]['value'];
+                    } else {
+                        return $this->buttonList[$ii]['value'];
+                    }
+                }
+
+                return $this->buttonList[$ii]['value'];
 
             default:
                 // check if any button hotkeys were pressed - return 'null' if no match
                 $hot = $this->checkHotButtons($keyPressed); // try trap for hot buttons 1st.
 
                 if ($hot === true) { // was hot button pressed?
-                    if ($this->mode === 'checklist') { // checklist support -- (optional)
+                    if ($this instanceof NcursesChecklist) { // checklist support -- (optional)
                         $exit = $this->getAllCheckboxVals();
                     } else { // menu selection
                         // return the menu value we are focused on
@@ -975,7 +1034,7 @@ abstract class NcursesBase
             }
 
             // output Checkbox -- (optional)
-            if ($this->mode === 'checklist') { // for checklist type menus
+            if ($this instanceof NcursesChecklist) { // for checklist type menus
                 $sel = ($this->menuList[$i]['selected'] == true ? 'X' : ' ');
                 ncurses_mvwaddstr($win, $this->menuList[$i]['y'], $this->menuList[$i]['x'], '[' . $sel . ']');
                 ncurses_mvwaddstr($win, $this->menuList[$i]['y'], $this->menuList[$i]['x'] + 4, '');
@@ -1034,7 +1093,7 @@ abstract class NcursesBase
     protected function createMenuSubWindow(&$win, $parent_height, $parent_width, $para_offset_y, $border = 0)
     {
         // auto-detect window width based on menu contents
-        if ($this->mode === 'checklist') {
+        if ($this instanceof NcursesChecklist) {
             $menu_width = 1 + 4 + $this->menuLabelWidth + 2 + $this->menuDescWidth + 1;
         } else {
             $menu_width = 1 + $this->menuLabelWidth + 2 + $this->menuDescWidth + 1;
@@ -1099,25 +1158,6 @@ abstract class NcursesBase
     public function setTitleDialogHeader($titleDialogHeader)
     {
         $this->titleDialogHeader = $titleDialogHeader;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getMode()
-    {
-        return $this->mode;
-    }
-
-    /**
-     * @param mixed $mode
-     * @return $this
-     */
-    public function setMode($mode)
-    {
-        $this->mode = $mode;
 
         return $this;
     }
@@ -1315,18 +1355,18 @@ abstract class NcursesBase
     /**
      * @return mixed
      */
-    public function getInputboxList()
+    public function getInputBoxList()
     {
-        return $this->inputboxList;
+        return $this->inputBoxList;
     }
 
     /**
-     * @param mixed $inputboxList
+     * @param mixed $inputBoxList
      * @return $this
      */
-    public function setInputboxList($inputboxList)
+    public function setInputBoxList($inputBoxList)
     {
-        $this->inputboxList = $inputboxList;
+        $this->inputBoxList = $inputBoxList;
 
         return $this;
     }
@@ -1334,18 +1374,18 @@ abstract class NcursesBase
     /**
      * @return mixed
      */
-    public function getInputboxTotal()
+    public function getInputBoxTotal()
     {
-        return $this->inputboxTotal;
+        return $this->inputBoxTotal;
     }
 
     /**
-     * @param mixed $inputboxTotal
+     * @param mixed $inputBoxTotal
      * @return $this
      */
-    public function setInputboxTotal($inputboxTotal)
+    public function setInputBoxTotal($inputBoxTotal)
     {
-        $this->inputboxTotal = $inputboxTotal;
+        $this->inputBoxTotal = $inputBoxTotal;
 
         return $this;
     }
@@ -1486,18 +1526,18 @@ abstract class NcursesBase
     /**
      * @return mixed
      */
-    public function getTextboxChar()
+    public function getTextBoxChar()
     {
-        return $this->textboxChar;
+        return $this->textBoxChar;
     }
 
     /**
-     * @param mixed $textboxChar
+     * @param mixed $textBoxChar
      * @return $this
      */
-    public function setTextboxChar($textboxChar)
+    public function setTextBoxChar($textBoxChar)
     {
-        $this->textboxChar = $textboxChar;
+        $this->textBoxChar = $textBoxChar;
 
         return $this;
     }
@@ -1505,18 +1545,18 @@ abstract class NcursesBase
     /**
      * @return mixed
      */
-    public function getTextboxLen()
+    public function getTextBoxLen()
     {
-        return $this->textboxLen;
+        return $this->textBoxLen;
     }
 
     /**
-     * @param mixed $textboxLen
+     * @param mixed $textBoxLen
      * @return $this
      */
-    public function setTextboxLen($textboxLen)
+    public function setTextBoxLen($textBoxLen)
     {
-        $this->textboxLen = $textboxLen;
+        $this->textBoxLen = $textBoxLen;
 
         return $this;
     }
@@ -1524,18 +1564,18 @@ abstract class NcursesBase
     /**
      * @return mixed
      */
-    public function getTextboxMax()
+    public function getTextBoxMax()
     {
-        return $this->textboxMax;
+        return $this->textBoxMax;
     }
 
     /**
-     * @param mixed $textboxMax
+     * @param mixed $textBoxMax
      * @return $this
      */
-    public function setTextboxMax($textboxMax)
+    public function setTextBoxMax($textBoxMax)
     {
-        $this->textboxMax = $textboxMax;
+        $this->textBoxMax = $textBoxMax;
 
         return $this;
     }

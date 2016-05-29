@@ -83,14 +83,17 @@ class NcursesMenu extends NcursesBase
     /**
      * @return mixed
      */
-    protected function menu()
+    public function display()
     {
+        ncurses_init();
+        $this->initScreen();
+
         // open a dialog box window
-        $cord = $this->getCoordinates($this->height, $this->width, "center", "middle");
+        $cord = $this->getCoordinates($this->height, $this->width, 'center', 'middle');
         $win = $this->createDialogWindow($cord['y'], $cord['x'], $this->height, $this->width, true);
 
         // output dialog text
-        $para_offset_y = $this->strokePara($win, $this->text, $this->height, $this->width, "center", true);
+        $para_offset_y = $this->strokePara($win, $this->text, $this->height, $this->width, 'center', true);
 
         // Create menu sub-window
         $mwin = $this->createMenuSubWindow($win, $this->height, $this->width, $para_offset_y, $this->border);

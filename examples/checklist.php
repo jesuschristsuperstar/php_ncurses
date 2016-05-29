@@ -1,15 +1,13 @@
 <?php
 use Ncurses\NcursesChecklist;
 
-$classpath = __DIR__ . '/../src/Ncurses/';
-require_once($classpath . 'NcursesBase.php');
-require_once($classpath . 'NcursesChecklist.php');
+require_once(__DIR__ . '/../vendor/autoload.php');
 
 // ********** Example: Checklist
 $dialog = new NcursesChecklist();
 
 // Set a top title bar
-$dialog->mode("checklist", "18x52");
+$dialog->setWindowDimensions(18, 52);
 $dialog->setTitlePageHeader('PHP ncurses Checklist Example v.1.0.0 - Jesus Christ Superstar ');
 $dialog->setText("This is a checkbox selection.\nWe are testing the checkboxes.");
 $dialog->setTitleDialogHeader(' Food List ');
@@ -21,7 +19,7 @@ $dialog->addChecklist("field-d", "Vegi", "V", "Garden Greens", 4, true);
 $dialog->addChecklist("field-e", "Grains", "G", "Flour, Nuts", 5, false);
 
 // Show dialog box & get user input
-$result = $dialog->stroke();
+$result = $dialog->display();
 
 // Properly cleanup the screen
 $dialog->destroy();

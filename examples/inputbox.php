@@ -1,15 +1,13 @@
 <?php
 use Ncurses\NcursesInputBox;
 
-$classpath = __DIR__ . '/../src/Ncurses/';
-require_once($classpath . 'NcursesBase.php');
-require_once($classpath . 'NcursesInputBox.php');
+require_once(__DIR__ . '/../vendor/autoload.php');
 
 // ********** Example: Inputbox
 $dialog = new NcursesInputBox();
 
 // Set a top title bar
-$dialog->mode('inputbox', '20x60');
+$dialog->setWindowDimensions(20, 60);
 $dialog->setTitlePageHeader('PHP ncurses Input Box Example v.1.0.0 - Jesus Christ Superstar ');
 $dialog->setTitleDialogHeader(' Customer Profile ');
 $dialog->setText("\nInput Box Title"); //title
@@ -30,7 +28,7 @@ $dialog->setFields([
 ]);
 
 // Show dialog box & get user input
-$result = $dialog->stroke();
+$result = $dialog->display();
 
 // Properly cleanup the screen
 $dialog->destroy();
