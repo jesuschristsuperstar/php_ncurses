@@ -1,5 +1,5 @@
 <?php
-use Ncurses\NcursesInputBox;
+use NcursesWidget\NcursesInputBox;
 
 require_once(__DIR__ . '/../vendor/autoload.php');
 

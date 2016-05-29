@@ -1,5 +1,5 @@
 <?php
-use Ncurses\NcursesMsgbox;
+use NcursesWidget\NcursesMsgbox;
 
 require_once(__DIR__ . '/../vendor/autoload.php');
 

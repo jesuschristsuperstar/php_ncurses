@@ -1,5 +1,5 @@
 <?php
-use Ncurses\NcursesConfirm;
+use NcursesWidget\NcursesConfirm;
 
 require_once(__DIR__ . '/../vendor/autoload.php');
 

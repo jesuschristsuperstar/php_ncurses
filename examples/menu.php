@@ -1,5 +1,5 @@
 <?php
-use Ncurses\NcursesMenu;
+use NcursesWidget\NcursesMenu;
 
 require_once(__DIR__ . '/../vendor/autoload.php');
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace Ncurses;
+namespace NcursesWidget;
 
 /**
  * Class NcursesNotice
- * @package Ncurses
+ * @package NcursesWidget
  */
 class NcursesNotice extends NcursesBase
 {
@@ -51,7 +51,7 @@ class NcursesNotice extends NcursesBase
         // open a dialog box window
         $width = max([$this->width, $this->minWidth]);
 
-        $cord = $this->getCoordinates($this->height, $width, 'center', 'middle');
+        $cord = $this->getCoordinates($this->height, $width, self::COORD_X_CENTER, self::COORD_Y_MIDDLE);
 
         $this->nwin = $this->createDialogWindow($cord['y'], $cord['x'], $this->height + 2, $width, true, 2);
 

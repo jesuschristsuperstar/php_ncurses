@@ -1,10 +1,10 @@
 <?php
 
-namespace Ncurses;
+namespace NcursesWidget;
 
 /**
  * Class NcursesConfirm
- * @package Ncurses
+ * @package NcursesWidget
  */
 class NcursesConfirm extends NcursesBase
 {
@@ -33,7 +33,7 @@ class NcursesConfirm extends NcursesBase
         $this->initScreen();
 
         // open a dialog box window
-        $cord = $this->getCoordinates($this->height, $this->width, 'center', 'middle');
+        $cord = $this->getCoordinates($this->height, $this->width, self::COORD_X_CENTER, self::COORD_Y_MIDDLE);
         $win = $this->createDialogWindow($cord['y'], $cord['x'], $this->height, $this->width, true);
 
         // output dialog text

@@ -1,6 +1,6 @@
 <?php
 
-namespace Ncurses;
+namespace NcursesWidget;
 
     /* * ********************* NcursesBase.php  *******************************
      *   Copyright (C) 2007 by J Randolph Smith                                *
@@ -27,10 +27,18 @@ namespace Ncurses;
 
 /**
  * Class NcursesBase
- * @package Ncurses
+ * @package NcursesWidget
  */
 abstract class NcursesBase
 {
+    const COORD_X_CENTER = 'center';
+    const COORD_X_RIGHT = 'right';
+    const COORD_X_LEFT = 'left';
+
+    const COORD_Y_MIDDLE = 'middle';
+    const COORD_Y_TOP = 'top';
+    const COORD_Y_BOTTOM = 'bottom';
+
     /**
      * @var string
      */
@@ -364,40 +372,44 @@ abstract class NcursesBase
      * Returns the top right x,y coordinates based on desired window size and alignment.
      * @param $height
      * @param $width
-     * @param string $hoz_just
-     * @param string $ver_just
+     * @param string $horizontalJust
+     * @param string $verticalJust
      * @return array
      */
-    protected function getCoordinates($height, $width, $hoz_just = "center", $ver_just = "middle")
-    {
-        $result = array('x' => 0, 'y' => 0);
+    protected function getCoordinates(
+        $height,
+        $width,
+        $horizontalJust = self::COORD_X_CENTER,
+        $verticalJust = self::COORD_Y_MIDDLE
+    ) {
+        $result = ['x' => 0, 'y' => 0];
 
-        switch ($hoz_just) {
-            case"center":
+        switch ($horizontalJust) {
+            case self::COORD_X_CENTER:
                 // Calculate offsets to center window based on window size
                 $result['x'] = round(($this->screenMaxWidth - $width) / 2);
                 break;
 
-            case"right":
+            case self::COORD_X_RIGHT:
                 $result['x'] = $this->screenMaxWidth - $width;
                 break;
 
-            case"left":
+            case self::COORD_X_LEFT:
             default:
                 break;
         }
 
-        switch ($ver_just) {
-            case"middle":
+        switch ($verticalJust) {
+            case self::COORD_Y_MIDDLE:
                 // Calculate offsets to center window based on window size
                 $result['y'] = round(($this->screenMaxHeight - $height) / 2);
                 break;
 
-            case"bottom":
+            case self::COORD_Y_BOTTOM:
                 $result['y'] = $this->screenMaxHeight - $height;
                 break;
 
-            case"top":
+            case self::COORD_Y_TOP:
             default:
                 break;
         }
@@ -627,7 +639,7 @@ abstract class NcursesBase
 
             if ($thischar == $hotchar) {
                 if ($this instanceof NcursesChecklist) { // checklists support
-                    $this->menuList[$n]['selected'] = ($this->menuList[$n]['selected'] == false ? true : false);
+                    $this->menuList[$n]['selected'] = !$this->menuList[$n]['selected'];
 
                     return (null);
                 } else {
@@ -917,7 +929,7 @@ abstract class NcursesBase
             case 32: // space
                 if ($this instanceof NcursesChecklist) {
                     // toggle item selection
-                    $this->menuList[$this->menuCursor]['selected'] = ($this->menuList[$this->menuCursor]['selected'] == false ? true : false);
+                    $this->menuList[$this->menuCursor]['selected'] = !$this->menuList[$this->menuCursor]['selected'];
                 }
                 break;
 
@@ -1004,7 +1016,8 @@ abstract class NcursesBase
         $this->menuList[$this->menuTotal]['label'] = $label;
         $this->menuList[$this->menuTotal]['desc'] = $desc;
         $this->menuList[$this->menuTotal]['hot'] = $hotkey;
-        $this->menuList[$this->menuTotal]['value'] = ($value === null ? $this->menuTotal : $value); // default value if non given
+        //default value if non given
+        $this->menuList[$this->menuTotal]['value'] = ($value === null ? $this->menuTotal : $value);
         $this->menuList[$this->menuTotal]['y'] = $this->menuTotal;
         $this->menuList[$this->menuTotal]['x'] = 0;
         $this->menuTotal++;
@@ -1084,35 +1097,35 @@ abstract class NcursesBase
     /**
      * Displays and creates a sub-window to contain the Menu Items
      * @param $win
-     * @param $parent_height
-     * @param $parent_width
-     * @param $para_offset_y
+     * @param $parentHeight
+     * @param $parentWidth
+     * @param $paraOffsetY
      * @param int $border
      * @return resource - ID of the sub-window
      */
-    protected function createMenuSubWindow(&$win, $parent_height, $parent_width, $para_offset_y, $border = 0)
+    protected function createMenuSubWindow(&$win, $parentHeight, $parentWidth, $paraOffsetY, $border = 0)
     {
         // auto-detect window width based on menu contents
         if ($this instanceof NcursesChecklist) {
-            $menu_width = 1 + 4 + $this->menuLabelWidth + 2 + $this->menuDescWidth + 1;
+            $menuWidth = 1 + 4 + $this->menuLabelWidth + 2 + $this->menuDescWidth + 1;
         } else {
-            $menu_width = 1 + $this->menuLabelWidth + 2 + $this->menuDescWidth + 1;
+            $menuWidth = 1 + $this->menuLabelWidth + 2 + $this->menuDescWidth + 1;
         }
 
         // Draw borders
-        $cord['y'] = 1 + $para_offset_y;
-        $cord['x'] = round(($parent_width - $menu_width) / 2);
+        $cord['y'] = 1 + $paraOffsetY;
+        $cord['x'] = round(($parentWidth - $menuWidth) / 2);
         //$cord = $this->getCoordinates($parent_height,$menu_width,"center","middle");
         $y = $this->menuTotal + 2;
-        $x = $menu_width;
+        $x = $menuWidth;
 
         if ($border != 0) {
             $this->drawThinBorders($win, $cord['y'], $cord['x'], $y, $x);
         }
 
         // draw window inside borders
-        $cord = $this->getCoordinates($parent_height, $menu_width, "center", "middle");
-        $swin = ncurses_newwin($y - 2, $x - 2, $cord['y'] + $para_offset_y + 2, $cord['x'] + 1);
+        $cord = $this->getCoordinates($parentHeight, $menuWidth, self::COORD_X_CENTER, self::COORD_Y_MIDDLE);
+        $swin = ncurses_newwin($y - 2, $x - 2, $cord['y'] + $paraOffsetY + 2, $cord['x'] + 1);
 
         // fill window
         ncurses_wcolor_set($swin, 2);
@@ -1121,7 +1134,7 @@ abstract class NcursesBase
             ncurses_whline($swin, 32, $x - 2);
         }
 
-        return ($swin);
+        return $swin;
     }
 
     /**

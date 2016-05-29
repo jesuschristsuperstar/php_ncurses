@@ -1,10 +1,10 @@
 <?php
 
-namespace Ncurses;
+namespace NcursesWidget;
 
 /**
  * Class NcursesChecklist
- * @package Ncurses
+ * @package NcursesWidget
  */
 class NcursesChecklist extends NcursesBase
 {
@@ -36,7 +36,7 @@ class NcursesChecklist extends NcursesBase
      */
     public function addChecklist($name, $label, $hotkey, $desc, $value = null, $selected = false)
     {
-        $this->addMenuItem("check", $name, $label, $hotkey, $desc, $value, $selected);
+        $this->addMenuItem('check', $name, $label, $hotkey, $desc, $value, $selected);
     }
 
     /**
@@ -67,27 +67,40 @@ class NcursesChecklist extends NcursesBase
         $this->initScreen();
 
         // open a dialog box window
-        $cord = $this->getCoordinates($this->height, $this->width, "center", "middle");
-        $win = $this->createDialogWindow($cord['y'], $cord['x'], $this->height, $this->width, true);
+        $cord = $this->getCoordinates(
+            $this->getHeight(),
+            $this->getWidth(),
+            self::COORD_X_CENTER,
+            self::COORD_Y_MIDDLE
+        );
+
+        $mainWindow = $this->createDialogWindow($cord['y'], $cord['x'], $this->getHeight(), $this->getWidth(), true);
 
         // output dialog text
-        $para_offset_y = $this->strokePara($win, $this->text, $this->height, $this->width, "center", true);
+        $paraOffsetY = $this->strokePara(
+            $mainWindow,
+            $this->getText(),
+            $this->getHeight(),
+            $this->getWidth(),
+            'center',
+            true
+        );
 
         // Create menu sub-window
-        $mwin = $this->createMenuSubWindow($win, $this->height, $this->width, $para_offset_y);
+        $menuSubWindow = $this->createMenuSubWindow($mainWindow, $this->getHeight(), $this->getWidth(), $paraOffsetY);
 
         $this->configureButtons();
 
         // wait for input
         do {
-            $this->strokeAllButtons($win);
-            $this->strokeAllMenuItems($mwin);
-            ncurses_wrefresh($win);
-            ncurses_wrefresh($mwin);
-            // get keyboard input			
-            $status = $this->getMenuInput($win);
+            $this->strokeAllButtons($mainWindow);
+            $this->strokeAllMenuItems($menuSubWindow);
+            ncurses_wrefresh($mainWindow);
+            ncurses_wrefresh($menuSubWindow);
+            //get keyboard input
+            $status = $this->getMenuInput($mainWindow);
         } while ($status === null);
 
-        return ($status);
+        return $status;
     }
 }

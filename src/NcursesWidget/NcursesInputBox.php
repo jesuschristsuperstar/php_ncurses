@@ -1,9 +1,9 @@
 <?php
-namespace Ncurses;
+namespace NcursesWidget;
 
 /**
  * Class NcursesInputBox
- * @package Ncurses
+ * @package NcursesWidget
  */
 class NcursesInputBox extends NcursesBase
 {
@@ -100,12 +100,12 @@ class NcursesInputBox extends NcursesBase
         $this->initScreen();
 
         // open a dialog box window
-        $cord = $this->getCoordinates($this->height, $this->width, "center", "middle");
+        $cord = $this->getCoordinates($this->height, $this->width, self::COORD_X_CENTER, self::COORD_Y_MIDDLE);
         $win = $this->createDialogWindow($cord['y'], $cord['x'], $this->height, $this->width, true);
 
         // Create menu sub-window
         // Controls alignment of menu title
-        $para_offset_y = $this->strokePara($win, $this->text, $this->height, $this->width, "center", true);
+        $para_offset_y = $this->strokePara($win, $this->text, $this->height, $this->width, 'center', true);
         $cord_x = $this->inputIndentation;
 
         //ORIGINAL CODE CENTERED INPUT FIELDS.
