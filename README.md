@@ -1,6 +1,6 @@
 php_ncurses
 ===========
-###Current Widgets###
+### Current Widgets
 
 - checklist   [one column of checkboxes]
 - confirm     [a basic yes/no prompt]
@@ -12,11 +12,11 @@ php_ncurses
 Examples included. Fully operational. 
 
 
-###Prerequisites###
+### Prerequisites
 
 - You'll need to install PHP-CLI 5.4+
 - You'll need to install <a href="http://php.net/manual/en/ncurses.installation.php">the ncurses extension for PHP</a>.
 
 
-###Composer###
+### Composer
 `composer require vsychov/php_ncurses`
