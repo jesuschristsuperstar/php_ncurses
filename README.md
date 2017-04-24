@@ -21,8 +21,7 @@ Examples included. Fully operational.
 
 
 ### Composer
-`composer require vsychov/php_ncurses`
-
+`composer require jesuschristsuperstar/php_ncurses`
 
 ## License
 
