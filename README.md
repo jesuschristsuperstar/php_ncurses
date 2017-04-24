@@ -1,5 +1,7 @@
 # php_ncurses
 
+Ncurses based terminal ui library for PHP applications. Works with PHP 5.4 or newer. 
+
 ### Current Widgets
 
 - checklist   [one column of checkboxes]
