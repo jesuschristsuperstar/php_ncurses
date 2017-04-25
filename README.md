@@ -33,7 +33,20 @@ pecl install ncurses
 ```
 
 ### Composer
-`composer require jesuschristsuperstar/php_ncurses`
+
+- I didn't upload this to Packagist, because you can install directly from Github by adding the following to your composer.json:
+
+```
+"require": {
+    "jesuschristsuperstar/php_ncurses": "*"
+  },
+  "repositories": [ 
+    {
+      "url":"https://github.com/jesuschristsuperstar/php_ncurses.git",
+      "type":"git"
+    }
+  ]
+```
 
 ## License
 
