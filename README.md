@@ -52,11 +52,11 @@ pecl install ncurses
 
 ```
 "require": {
-    "jesuschristsuperstar/php_ncurses": "*"
+    "tecfu/php_ncurses": "*"
   },
   "repositories": [ 
     {
-      "url":"https://github.com/jesuschristsuperstar/php_ncurses.git",
+      "url":"https://github.com/tecfu/php_ncurses.git",
       "type":"git"
     }
   ]
