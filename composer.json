@@ -10,11 +10,6 @@
     {
       "name": "jesuschristsuperstar",
       "email": "donotreply@github.com"
-    },
-    {
-      "name": "Viacheslav Sychov",
-      "email": "dev@sychov.pro",
-      "homepage": "https://sychov.pro"
     }
   ],
   "description": "PHP ncurses widget library",
