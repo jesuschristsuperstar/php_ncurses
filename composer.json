@@ -1,5 +1,5 @@
 {
-  "name": "vsychov/php_ncurses",
+  "name": "jesuschristsuperstar/php_ncurses",
   "license": "GPLv3",
   "type": "project",
   "authors": [
@@ -7,6 +7,10 @@
       "name": "J Randolph Smith",
       "email": "johns@servangle.net"
     },
+		{
+      "name": "jesuschristsuperstar",
+      "email": "donotreply@github.com"
+		},
     {
       "name": "Viacheslav Sychov",
       "email": "dev@sychov.pro",
