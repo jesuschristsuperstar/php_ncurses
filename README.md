@@ -66,4 +66,4 @@ pecl install ncurses
 
 GNU General Public License v3.0
 
-Copyright (c) 2010 - 2017 jesuschristsuperstar
+Copyright (c) 2007 - 2017. J Randolph Smith, jesuschristsuperstar, tecfu, et. al.
