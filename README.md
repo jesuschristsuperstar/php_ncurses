@@ -1,4 +1,4 @@
-# php_ncurses
+# PHP Ncurses Widget Library
 
 Ncurses based terminal ui library for PHP applications. Works with PHP 5.4 or newer. 
 
