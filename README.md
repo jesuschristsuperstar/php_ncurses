@@ -18,7 +18,19 @@ Examples included. Fully operational.
 
 - You'll need to install PHP-CLI 5.4+
 - You'll need to install <a href="http://php.net/manual/en/ncurses.installation.php">the ncurses extension for PHP</a>.
+- It seems PHP7 doesn't support the ncurses extension at this time. [See here](https://groups.google.com/forum/#!topic/comp.lang.php/1EqPfC0_NGQ). Funny that I found this out after updating this repo after 4 years. Typical. 
 
+To see if you have the ncurses extension installed:
+
+```
+$ php -m
+```
+
+If not listed, you'll need to:
+
+```
+pecl install ncurses
+```
 
 ### Composer
 `composer require jesuschristsuperstar/php_ncurses`
