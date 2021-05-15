@@ -31,8 +31,7 @@ Ncurses based terminal ui library for PHP applications. Works with PHP 5.4 or ne
 ### Prerequisites
 
 - You'll need to install PHP-CLI 5.4+
-- You'll need to install <a href="http://php.net/manual/en/ncurses.installation.php">the ncurses extension for PHP</a>.
-- Please note that it PHP7+ doesn't support the ncurses extension at this time. [See here](https://groups.google.com/forum/#!topic/comp.lang.php/1EqPfC0_NGQ). 
+- You'll need to install <a href="http://php.net/manual/en/ncurses.installation.php">the ncurses extension for PHP</a>. See [here](https://stackoverflow.com/a/47542051/3751385) for how to do that in PHP 7+.
 
 To see if you have the ncurses extension installed:
 
